@@ -1,96 +1,37 @@
-# 🎙️ ChatGPT Voice Assistant
+# 💰 FinBot - Assistente Financeiro com IA Generativa
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![OpenAI](https://img.shields.io/badge/OpenAI-API-green)
-![Status](https://img.shields.io/badge/Status-Didático-orange)
+![OpenAI](https://img.shields.io/badge/OpenAI-Whisper%20%7C%20GPT-green)
+![UX](https://img.shields.io/badge/UX-Financial%20Experience-purple)
 
-Este projeto é um assistente de voz que integra **Whisper (OpenAI)** para transcrição de áudio, **ChatGPT** para geração de respostas inteligentes e **gTTS/Pygame** para síntese e reprodução de voz.
+> Projeto desenvolvido para o desafio "Construa seu Assistente Virtual", focado em **relacionamento financeiro** e boas práticas de experiência do usuário.
 
-O objetivo é demonstrar a orquestração de diferentes módulos em Python para criar uma interface de conversação natural.
+## 🎯 Objetivo do Projeto
+Criar uma experiência digital acessível onde o usuário pode tirar dúvidas sobre **investimentos, taxas (Selic/CDI)** e solicitar **simulações financeiras** usando apenas a voz. A solução democratiza o acesso à informação financeira através de uma interface natural e sem barreiras de digitação.
 
-## 🚀 Tecnologias Utilizadas
+## 🧠 Inteligência Financeira (Features)
+O sistema foi projetado com um *System Prompt* especialista que garante:
+- **Linguagem Acessível:** Tradução de "bancavês" para português claro.
+- **Simulações Rápidas:** Cálculos estimativos de rendimento (ex: Poupança vs. FIIs).
+- **Educação Financeira:** Explicação de conceitos complexos de forma didática.
 
-- **[Python](https://www.python.org/)**: Linguagem principal.
-- **[OpenAI Whisper](https://openai.com/research/whisper)**: Para converter fala em texto (Speech-to-Text).
-- **[OpenAI GPT](https://platform.openai.com/)**: Modelo de linguagem para gerar respostas.
-- **[gTTS (Google Text-to-Speech)](https://pypi.org/project/gTTS/)**: Para converter texto em áudio.
-- **[Pygame](https://www.pygame.org/)**: Para reprodução do áudio gerado.
-- **Python-dotenv**: Gerenciamento seguro de chaves de API.
+## 🛠️ Arquitetura Técnica
+A solução integra três pilares de IA para criar um fluxo contínuo:
+1.  **Audição (Input):** `OpenAI Whisper` transcreve a dúvida financeira do usuário.
+2.  **Raciocínio (Core):** `GPT-3.5 Turbo` (configurado como consultor financeiro) processa a dúvida e gera uma resposta empática e técnica.
+3.  **Fala (Output):** `gTTS` converte a orientação financeira em áudio para resposta imediata.
 
-## 📂 Estrutura do Projeto
+## 📂 Estrutura
+- `app.py`: Orquestrador da experiência do usuário.
+- `chat_response.py`: Contém a lógica de **Engenharia de Prompt** focada em finanças.
+- `speech_to_text.py`: Módulo de transcrição de voz.
+- `text_to_speech.py`: Módulo de síntese de voz.
 
-```plaintext
-chatgpt-voice-assistant/
-│
-├── app.py                # Orquestrador (Main)
-├── speech_to_text.py     # Módulo de transcrição (Whisper)
-├── chat_response.py      # Módulo de inteligência (GPT)
-├── text_to_speech.py     # Módulo de síntese de voz (gTTS)
-├── requirements.txt      # Dependências do projeto
-├── .env                  # Chave da API (Não versionado)
-└── entrada.wav           # Arquivo de áudio para teste
+## 🚀 Como testar a experiência
+1. Instale as dependências: `pip install -r requirements.txt`
+2. Configure sua `OPENAI_API_KEY` no arquivo `.env`.
+3. Adicione um arquivo `entrada.wav` com uma dúvida (Ex: *"Quanto rende 1000 reais no Tesouro Selic?"*).
+4. Execute: `python app.py`.
 
-## 🔄 Fluxo de Dados
-
-```mermaid
-graph TD;
-    A[🎤 entrada.wav] -->|Whisper| B(speech_to_text.py);
-    B -->|Texto Transcrito| C(chat_response.py);
-    C -->|Consulta GPT| D{OpenAI API};
-    D -->|Resposta Texto| C;
-    C -->|Texto| E(text_to_speech.py);
-    E -->|gTTS| F[🔊 Reprodução Pygame];
-
-    ⚙️ Configuração
-1. Pré-requisitos
-No Codespaces ou Linux, é recomendável instalar o ffmpeg para manipulação de áudio:
-
-Bash
-
-sudo apt update && sudo apt install -y ffmpeg    
-
-2. Variáveis de Ambiente
-Crie um arquivo .env na raiz do projeto e adicione sua chave da OpenAI:
-
-Snippet de código
-
-OPENAI_API_KEY=sk-sua-chave-aqui-xyz...
-
-⚠️ Atenção: Este projeto utiliza a API da OpenAI. É necessário ter créditos ativos na plataforma (Billing) para que a transcrição e a geração de texto funcionem corretamente.
-
-📦 Instalação e Execução
-Crie o ambiente virtual (Recomendado):
-
-Bash
-
-python -m venv venv
-source venv/bin/activate
-Instale as dependências:
-
-Bash
-
-pip install -r requirements.txt
-Prepare o áudio: Certifique-se de que existe um arquivo chamado entrada.wav na raiz do projeto (você pode fazer upload de um áudio gravado ou gerar um para teste).
-
-Execute o projeto:
-
-Bash
-
-python app.py
-⚠️ Nota sobre Codespaces
-Se você estiver rodando este código no GitHub Codespaces:
-
-O script executará a transcrição e a geração da resposta.
-
-Porém, o Pygame não conseguirá reproduzir o som (pois o servidor na nuvem não tem caixas de som).
-
-O arquivo de resposta de áudio (ex: resposta.mp3) será salvo na pasta. Você pode clicar com o botão direito no arquivo e escolher Download para ouvir o resultado.
-
-🎯 Objetivo da Atividade
-Este projeto foi desenvolvido como modelo didático para demonstrar:
-
-Integração de APIs: Conexão entre serviços de IA e scripts locais.
-
-Segurança: Uso de variáveis de ambiente (.env) para proteger credenciais.
-
-Modularização: Separação de responsabilidades (STT, LLM, TTS) em arquivos distintos.
+---
+*Desenvolvido aplicando conceitos de Generative AI, Python e Financial UX.*
