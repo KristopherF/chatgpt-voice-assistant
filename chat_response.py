@@ -1,14 +1,20 @@
-import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 import os
 
-# Carrega variáveis do arquivo .env
+# Carrega a chave
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def gerar_resposta(texto_usuario):
-    resposta = openai.Chat.completions.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": texto_usuario}]
-    )
-    return resposta.choices[0].message.content
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo", # Ou "gpt-4" se preferir
+            messages=[
+                {"role": "system", "content": "Você é um assistente útil e conciso."},
+                {"role": "user", "content": texto_usuario}
+            ]
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"Erro ao conectar com a OpenAI: {e}"
